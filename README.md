@@ -70,7 +70,7 @@ Also, as alluded to above, this is information is best provided lexically, inste
 
 ## Proposed solution
 
-This proposal adds an `import.meta` meta-property, which is itself an object. The object can be modified arbitrarily by the host, but by default it is an empty, null-prototype object.
+This proposal adds an `import.meta` meta-property, which is itself an object. It is created by the ECMAScript implementation, with a null prototype. The host environment can return a set of properties (as key/value pairs) that will be added to the object. Finally, as an escape hatch, the object can be modified arbitrarily by the host if necessary.
 
 The `import.meta` meta-property is only syntactically valid in modules, as it is meant for meta-information about the currently running module, and should not be repurposed for information about the currently-running classic script.
 

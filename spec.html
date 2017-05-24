@@ -143,14 +143,12 @@ contributors: Domenic Denicola
             1. Else,
               1. Append _ee_ to _indirectExportEntries_.
           1. <ins>Let _importMeta_ be ObjectCreate(*null*).</ins>
-          1. <ins>Let _importMetaValues_ be HostGetImportMetaProperties(_body_, _realm_, _hostDefined_).</ins>
+          1. <ins>Let _importMetaValues_ be ! HostGetImportMetaProperties(_body_, _realm_, _hostDefined_).</ins>
           1. <ins>For each Record {[[Key]], [[Value]]} _p_ that is an element of _importMetaValues_,</ins>
             1. <ins>Perform ! CreateDataProperty(_importMeta_, _p_.[[Key]], _p_.[[Value]]).</ins>
+          1. <ins>Perform ! HostFinalizeImportMeta(_importMeta_, _body_, _realm_, _hostDefined_).</ins>
           1. Return Source Text Module Record {[[Realm]]: _realm_, [[Environment]]: *undefined*, [[HostDefined]]: _hostDefined_,<ins> [[ImportMeta]]: _importMeta_,</ins> [[Namespace]]: *undefined*, [[Evaluated]]: *false*, [[ECMAScriptCode]]: _body_, [[RequestedModules]]: _requestedModules_, [[ImportEntries]]: _importEntries_, [[LocalExportEntries]]: _localExportEntries_, [[StarExportEntries]]: _starExportEntries_, [[IndirectExportEntries]]: _indirectExportEntries_}.
         </emu-alg>
-        <emu-note>
-          <p>An implementation may parse module source text and analyse it for Early Error conditions prior to the evaluation of ParseModule for that module source text. However, the reporting of any errors must be deferred until the point where this specification actually performs ParseModule upon that source text.</p>
-        </emu-note>
       </emu-clause>
 
       <emu-clause id="sec-hostgetimportmetaproperties" aoid="HostGetImportMetaProperties">
@@ -176,6 +174,28 @@ contributors: Domenic Denicola
 
         <p>The default implementation of HostGetImportMetaProperties is to return a new empty
         List.</p>
+      </emu-clause>
+
+      <emu-clause id="sec-hostfinalizeimportmeta" aoid="HostFinalizeImportMeta">
+        <h1><ins>Runtime Semantics: HostFinalizeImportMeta ( _importMeta_, _body_, _realm_, _hostDefined_ )</ins></h1>
+
+        <p>HostFinalizeImportMeta is an implementation-defined abstract operation that allows
+        hosts to perform any extraordinary operations to prepare the object returned from
+        `import.meta`.</p>
+
+        <p>Most hosts will be able to simply define HostGetImportMetaProperties, and leave
+        HostFinalizeImportMeta with its default behavior. However, HostFinalizeImportMeta provies an
+        "escape hatch" for hosts which need to directly manipulate the object before it is exposed
+        to ECMAScript code.</p>
+
+        <p>The implementation of HostFinalizeImportMeta must conform to the following
+        requirements:</p>
+
+        <ul>
+          <li>It must always complete normally (i.e., not return an abrupt completion).</li>
+        </ul>
+
+        <p>The default implementation of HostFinalizeImportMeta is to do nothing.</p>
       </emu-clause>
     </emu-clause>
   </emu-clause>
