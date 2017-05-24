@@ -109,6 +109,75 @@ contributors: Domenic Denicola
         </table>
       </emu-table>
     </emu-clause>
+
+    <emu-clause id="sec-source-text-module-records">
+      <h1>Source Text Module Records</h1>
+
+      <emu-clause id="sec-parsemodule" aoid="ParseModule">
+        <h1>ParseModule ( _sourceText_, _realm_, _hostDefined_ )</h1>
+        <p>The abstract operation ParseModule with arguments _sourceText_, _realm_, and _hostDefined_ creates a Source Text Module Record based upon the result of parsing _sourceText_ as a |Module|. ParseModule performs the following steps:</p>
+        <emu-alg>
+          1. Assert: _sourceText_ is an ECMAScript source text (see clause <emu-xref href="#sec-ecmascript-language-source-code"></emu-xref>).
+          1. Parse _sourceText_ using |Module| as the goal symbol and analyse the parse result for any Early Error conditions. If the parse was successful and no early errors were found, let _body_ be the resulting parse tree. Otherwise, let _body_ be a List of one or more *SyntaxError* or *ReferenceError* objects representing the parsing errors and/or early errors. Parsing and early error detection may be interweaved in an implementation-dependent manner. If more than one parsing error or early error is present, the number and ordering of error objects in the list is implementation-dependent, but at least one must be present.
+          1. If _body_ is a List of errors, return _body_.
+          1. Let _requestedModules_ be the ModuleRequests of _body_.
+          1. Let _importEntries_ be ImportEntries of _body_.
+          1. Let _importedBoundNames_ be ImportedLocalNames(_importEntries_).
+          1. Let _indirectExportEntries_ be a new empty List.
+          1. Let _localExportEntries_ be a new empty List.
+          1. Let _starExportEntries_ be a new empty List.
+          1. Let _exportEntries_ be ExportEntries of _body_.
+          1. For each ExportEntry Record _ee_ in _exportEntries_, do
+            1. If _ee_.[[ModuleRequest]] is *null*, then
+              1. If _ee_.[[LocalName]] is not an element of _importedBoundNames_, then
+                1. Append _ee_ to _localExportEntries_.
+              1. Else,
+                1. Let _ie_ be the element of _importEntries_ whose [[LocalName]] is the same as _ee_.[[LocalName]].
+                1. If _ie_.[[ImportName]] is `"*"`, then
+                  1. Assert: This is a re-export of an imported module namespace object.
+                  1. Append _ee_ to _localExportEntries_.
+                1. Else this is a re-export of a single name,
+                  1. Append the ExportEntry Record {[[ModuleRequest]]: _ie_.[[ModuleRequest]], [[ImportName]]: _ie_.[[ImportName]], [[LocalName]]: *null*, [[ExportName]]: _ee_.[[ExportName]] } to _indirectExportEntries_.
+            1. Else if _ee_.[[ImportName]] is `"*"`, then
+              1. Append _ee_ to _starExportEntries_.
+            1. Else,
+              1. Append _ee_ to _indirectExportEntries_.
+          1. <ins>Let _importMeta_ be ObjectCreate(*null*).</ins>
+          1. <ins>Let _importMetaValues_ be HostGetImportMetaProperties(_body_, _realm_, _hostDefined_).</ins>
+          1. <ins>For each Record {[[Key]], [[Value]]} _p_ that is an element of _importMetaValues_,</ins>
+            1. <ins>Perform ! CreateDataProperty(_importMeta_, _p_.[[Key]], _p_.[[Value]]).</ins>
+          1. Return Source Text Module Record {[[Realm]]: _realm_, [[Environment]]: *undefined*, [[HostDefined]]: _hostDefined_,<ins> [[ImportMeta]]: _importMeta_,</ins> [[Namespace]]: *undefined*, [[Evaluated]]: *false*, [[ECMAScriptCode]]: _body_, [[RequestedModules]]: _requestedModules_, [[ImportEntries]]: _importEntries_, [[LocalExportEntries]]: _localExportEntries_, [[StarExportEntries]]: _starExportEntries_, [[IndirectExportEntries]]: _indirectExportEntries_}.
+        </emu-alg>
+        <emu-note>
+          <p>An implementation may parse module source text and analyse it for Early Error conditions prior to the evaluation of ParseModule for that module source text. However, the reporting of any errors must be deferred until the point where this specification actually performs ParseModule upon that source text.</p>
+        </emu-note>
+      </emu-clause>
+
+      <emu-clause id="sec-hostgetimportmetaproperties" aoid="HostGetImportMetaProperties">
+        <h1><ins>Runtime Semantics: HostGetImportMetaProperties ( _body_, _realm_, _hostDefined_ )</ins></h1>
+
+        <p>HostGetImportMetaProperties is an implementation-defined abstract operation that allows
+        hosts to provide property keys and values for the object returned from `import.meta`.</p>
+
+        <p>The implementation of HostGetImportMetaProperties must conform to the following
+        requirements:</p>
+
+        <ul>
+          <li>It must return a List, whose values are all Records with the two fields [[Key]] and
+          [[Value]].</li>
+
+          <li>Each such Record's [[Key]] field must be a property key, i.e., IsPropertyKey must
+          return true when applied to it.</li>
+
+          <li>Each such Record's [[Value]] field must be an ECMAScript value.</li>
+
+          <li>It must always complete normally (i.e., not return an abrupt completion).</li>
+        </ul>
+
+        <p>The default implementation of HostGetImportMetaProperties is to return a new empty
+        List.</p>
+      </emu-clause>
+    </emu-clause>
   </emu-clause>
 </emu-clause>
 
