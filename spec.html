@@ -15,3 +15,80 @@ contributors: Domenic Denicola
 
   <p>Background explanatory material for this specification can be found in the <a href="https://github.com/domenic/proposal-import-meta">domenic/proposal-import-meta</a> repository. See also the <a href="https://github.com/domenic/proposal-import-meta/issues">issues</a> list.</p>
 </emu-intro>
+
+<emu-clause id="sec-left-hand-side-expressions">
+  <h1>Left-Hand-Side Expressions</h1>
+  <h2>Syntax</h2>
+  <emu-grammar>
+    MemberExpression[Yield, Await] :
+      PrimaryExpression[?Yield, ?Await]
+      MemberExpression[?Yield, ?Await] `[` Expression[+In, ?Yield, ?Await] `]`
+      MemberExpression[?Yield, ?Await] `.` IdentifierName
+      MemberExpression[?Yield, ?Await] TemplateLiteral[?Yield, ?Await]
+      SuperProperty[?Yield, ?Await]
+      MetaProperty
+      `new` MemberExpression[?Yield, ?Await] Arguments[?Yield, ?Await]
+
+    SuperProperty[Yield, Await] :
+      `super` `[` Expression[+In, ?Yield, ?Await] `]`
+      `super` `.` IdentifierName
+
+    MetaProperty :
+      NewTarget
+      <ins>ImportMeta</ins>
+
+    NewTarget :
+      `new` `.` `target`
+
+    <ins>ImportMeta :</ins>
+      <ins>`import` `.` `meta`</ins>
+
+    NewExpression[Yield, Await] :
+      MemberExpression[?Yield, ?Await]
+      `new` NewExpression[?Yield, ?Await]
+
+    CallExpression[Yield, Await] :
+      CoverCallExpressionAndAsyncArrowHead[?Yield, ?Await] #callcover
+      SuperCall[?Yield, ?Await]
+      CallExpression[?Yield, ?Await] Arguments[?Yield, ?Await]
+      CallExpression[?Yield, ?Await] `[` Expression[+In, ?Yield, ?Await] `]`
+      CallExpression[?Yield, ?Await] `.` IdentifierName
+      CallExpression[?Yield, ?Await] TemplateLiteral[?Yield, ?Await]
+
+    SuperCall[Yield, Await] :
+      `super` Arguments[?Yield, ?Await]
+
+    Arguments[Yield, Await] :
+      `(` `)`
+      `(` ArgumentList[?Yield, ?Await] `)`
+      `(` ArgumentList[?Yield, ?Await] `,` `)`
+
+    ArgumentList[Yield, Await] :
+      AssignmentExpression[+In, ?Yield, ?Await]
+      `...` AssignmentExpression[+In, ?Yield, ?Await]
+      ArgumentList[?Yield, ?Await] `,` AssignmentExpression[+In, ?Yield, ?Await]
+      ArgumentList[?Yield, ?Await] `,` `...` AssignmentExpression[+In, ?Yield, ?Await]
+
+    LeftHandSideExpression[Yield, Await] :
+      NewExpression[?Yield, ?Await]
+      CallExpression[?Yield, ?Await]
+  </emu-grammar>
+
+  <emu-clause id="sec-meta-properties">
+    <h1>Meta Properties</h1>
+
+    <emu-clause id="sec-meta-properties-runtime-semantics-evaluation">
+      <h1>Runtime Semantics: Evaluation</h1>
+      <emu-grammar>NewTarget : `new` `.` `target`</emu-grammar>
+      <emu-alg>
+        1. Return GetNewTarget().
+      </emu-alg>
+    </emu-clause>
+
+    <emu-grammar><ins>ImportMeta : `import` `.` `meta`</ins></emu-grammar>
+    <emu-alg>
+      1. Return ... TODO ...
+    </emu-alg>
+  </emu-clause>
+  </emu-clause>
+</emu-clause>
