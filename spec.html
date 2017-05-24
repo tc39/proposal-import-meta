@@ -74,6 +74,23 @@ contributors: Domenic Denicola
       CallExpression[?Yield, ?Await]
   </emu-grammar>
 
+  <emu-clause id="sec-static-semantics">
+    <h1>Static Semantics</h1>
+
+    <emu-clause id="sec-left-hand-side-expressions-static-semantics-early-errors">
+      <h1><ins>Static Semantics: Early Errors</ins></h1>
+
+      <emu-grammar>
+        ImportMeta :
+          `import` `.` `meta`
+      </emu-grammar>
+
+      <ul>
+        <li>It is an early Syntax Error if |Module| is not the syntactic goal symbol.</li>
+      </ul>
+    </emu-clause>
+  </emu-clause>
+
   <emu-clause id="sec-meta-properties">
     <h1>Meta Properties</h1>
 
