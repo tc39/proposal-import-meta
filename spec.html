@@ -16,6 +16,102 @@ contributors: Domenic Denicola
   <p>Background explanatory material for this specification can be found in the <a href="https://github.com/domenic/proposal-import-meta">domenic/proposal-import-meta</a> repository. See also the <a href="https://github.com/domenic/proposal-import-meta/issues">issues</a> list.</p>
 </emu-intro>
 
+<emu-clause id="sec-modules">
+  <h1>Modules</h1>
+
+  <emu-clause id="sec-module-semantics">
+    <h1>Module Semantics</h1>
+
+    <emu-clause id="sec-abstract-module-records">
+      <h1>Abstract Module Records</h1>
+
+      <emu-table id="table-36" caption="Module Record Fields">
+        <table>
+          <thead>
+          <tr>
+            <th>
+              Field Name
+            </th>
+            <th>
+              Value Type
+            </th>
+            <th>
+              Meaning
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>
+              [[Realm]]
+            </td>
+            <td>
+              Realm Record | *undefined*
+            </td>
+            <td>
+              The Realm within which this module was created. *undefined* if not yet assigned.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              [[Environment]]
+            </td>
+            <td>
+              Lexical Environment | *undefined*
+            </td>
+            <td>
+              The Lexical Environment containing the top level bindings for this module. This field is set when the module is instantiated.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              [[Namespace]]
+            </td>
+            <td>
+              Object | *undefined*
+            </td>
+            <td>
+              The Module Namespace Object (<emu-xref href="#sec-module-namespace-objects"></emu-xref>) if one has been created for this module. Otherwise *undefined*.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              [[Evaluated]]
+            </td>
+            <td>
+              Boolean
+            </td>
+            <td>
+              Initially *false*, *true* if evaluation of this module has started. Remains *true* when evaluation completes, even if it is an abrupt completion.
+            </td>
+          </tr>
+          <tr>
+            <td><ins>[[Meta]]</ins></td>
+            <td><ins>Object</ins></td>
+            <td>
+              <ins>An object exposed through the `import.meta` meta property. Concrete subclasses of
+              the Abstract Module Record specification type are expected to fill this field when
+              creating the Module Record, usually by delegating to the host environment.</ins>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              [[HostDefined]]
+            </td>
+            <td>
+              Any, default value is *undefined*.
+            </td>
+            <td>
+              Field reserved for use by host environments that need to associate additional information with a module.
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </emu-table>
+    </emu-clause>
+  </emu-clause>
+</emu-clause>
+
 <emu-clause id="sec-left-hand-side-expressions">
   <h1>Left-Hand-Side Expressions</h1>
   <h2>Syntax</h2>
@@ -106,7 +202,9 @@ contributors: Domenic Denicola
 
     <emu-grammar><ins>ImportMeta : `import` `.` `meta`</ins></emu-grammar>
     <emu-alg>
-      1. <ins>Return ... TODO ...</ins>
+      1. <ins>Let _module_ be GetActiveScriptOrModule().</ins>
+      1. <ins>Assert: _module_ is a Module Record (not a Script Record).</ins>
+      1. <ins>Return _module_.[[ImportMeta]].</ins>
     </emu-alg>
   </emu-clause>
   </emu-clause>
