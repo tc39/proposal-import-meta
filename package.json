@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "name": "proposal-import-meta",
+  "description": "import.meta proposal for JavaScript (build setup only)",
+  "author": "Domenic Denicola <d@domenic.me> (https://domenic.me/)",
+  "license": "MIT",
+  "repository": "domenic/proposal-import-meta",
+  "scripts": {
+    "spec": "ecmarkup spec.html out/index.html --js out/ecmarkup.js --css out/ecmarkup.css",
+    "watch": "ecmarkup --watch spec.html out/index.html --js out/ecmarkup.js --css out/ecmarkup.css"
+  },
+  "devDependencies": {
+    "ecmarkup": "^3.11.2"
+  }
+}
