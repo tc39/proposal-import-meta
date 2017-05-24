@@ -70,7 +70,7 @@ Also, as alluded to above, this is information is best provided lexically, inste
 
 ## Proposed solution
 
-This proposal adds an `import.meta` meta-property, which is itself an object. The object can be modified arbitrarily by the host, but by default it is an ordinary object, including having `Object.prototype` in its prototype chain.
+This proposal adds an `import.meta` meta-property, which is itself an object. The object can be modified arbitrarily by the host, but by default it is an empty, null-prototype object.
 
 The `import.meta` meta-property is only syntactically valid in modules, as it is meant for meta-information about the currently running module, and should not be repurposed for information about the currently-running classic script.
 
