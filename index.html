@@ -1,5 +1,5 @@
 <!doctype html>
-<head><meta charset="utf-8"><title>import.meta</title><script type="application/json" id="menu-search-biblio">[{"type":"clause","id":"introduction","aoid":null,"title":"Introduction","titleHTML":"Introduction","number":"","namespace":"https://domenic.github.io/proposal-import-meta/","location":"","referencingIds":[],"key":"Introduction"}]</script></head><body><div id="menu-toggle">☰</div><div id="menu-spacer"></div><div id="menu"><div id="menu-search"><input type="text" id="menu-search-box" placeholder="Search..."><div id="menu-search-results" class="inactive"></div></div><div id="menu-pins"><div class="menu-pane-header">Pins</div><ul id="menu-pins-list"></ul></div><div class="menu-pane-header">Table of Contents</div><div id="menu-toc"><ol class="toc"><li><span class="item-toggle-none"></span><a href="#introduction" title="Introduction">Introduction</a></li></ol></div></div><div id="spec-container"><h1 class="version first">Stage 0 Draft / May 24, 2017</h1><h1 class="title">import.meta</h1>
+<head><meta charset="utf-8"><title>import.meta</title><script type="application/json" id="menu-search-biblio">[{"type":"clause","id":"introduction","aoid":null,"title":"Introduction","titleHTML":"Introduction","number":"","namespace":"https://domenic.github.io/proposal-import-meta/","location":"","referencingIds":[],"key":"Introduction"},{"type":"production","id":"prod-MemberExpression","name":"MemberExpression","referencingIds":["_ref_1","_ref_2","_ref_3","_ref_6","_ref_10"],"namespace":"https://domenic.github.io/proposal-import-meta/","location":"","key":"MemberExpression"},{"type":"production","id":"prod-SuperProperty","name":"SuperProperty","referencingIds":["_ref_4"],"namespace":"https://domenic.github.io/proposal-import-meta/","location":"","key":"SuperProperty"},{"type":"production","id":"prod-MetaProperty","name":"MetaProperty","referencingIds":["_ref_5"],"namespace":"https://domenic.github.io/proposal-import-meta/","location":"","key":"MetaProperty"},{"type":"production","id":"prod-NewTarget","name":"NewTarget","referencingIds":["_ref_8"],"namespace":"https://domenic.github.io/proposal-import-meta/","location":"","key":"NewTarget"},{"type":"production","id":"prod-ImportMeta","name":"ImportMeta","referencingIds":["_ref_9"],"namespace":"https://domenic.github.io/proposal-import-meta/","location":"","key":"ImportMeta"},{"type":"production","id":"prod-NewExpression","name":"NewExpression","referencingIds":["_ref_11","_ref_23"],"namespace":"https://domenic.github.io/proposal-import-meta/","location":"","key":"NewExpression"},{"type":"production","id":"prod-CallExpression","name":"CallExpression","referencingIds":["_ref_13","_ref_15","_ref_16","_ref_17","_ref_24"],"namespace":"https://domenic.github.io/proposal-import-meta/","location":"","key":"CallExpression"},{"type":"production","id":"prod-SuperCall","name":"SuperCall","referencingIds":["_ref_12"],"namespace":"https://domenic.github.io/proposal-import-meta/","location":"","key":"SuperCall"},{"type":"production","id":"prod-Arguments","name":"Arguments","referencingIds":["_ref_7","_ref_14","_ref_18"],"namespace":"https://domenic.github.io/proposal-import-meta/","location":"","key":"Arguments"},{"type":"production","id":"prod-ArgumentList","name":"ArgumentList","referencingIds":["_ref_19","_ref_20","_ref_21","_ref_22"],"namespace":"https://domenic.github.io/proposal-import-meta/","location":"","key":"ArgumentList"},{"type":"production","id":"prod-LeftHandSideExpression","name":"LeftHandSideExpression","referencingIds":[],"namespace":"https://domenic.github.io/proposal-import-meta/","location":"","key":"LeftHandSideExpression"},{"type":"clause","id":"sec-left-hand-side-expressions-static-semantics-early-errors","aoid":null,"title":"Static Semantics: Early Errors","titleHTML":"<ins>Static Semantics: Early Errors</ins>","number":"1.1.1","namespace":"https://domenic.github.io/proposal-import-meta/","location":"","referencingIds":[],"key":"Static Semantics: Early Errors"},{"type":"clause","id":"sec-static-semantics","aoid":null,"title":"Static Semantics","titleHTML":"Static Semantics","number":"1.1","namespace":"https://domenic.github.io/proposal-import-meta/","location":"","referencingIds":[],"key":"Static Semantics"},{"type":"clause","id":"sec-meta-properties-runtime-semantics-evaluation","aoid":null,"title":"Runtime Semantics: Evaluation","titleHTML":"Runtime Semantics: Evaluation","number":"1.2.1","namespace":"https://domenic.github.io/proposal-import-meta/","location":"","referencingIds":[],"key":"Runtime Semantics: Evaluation"},{"type":"clause","id":"sec-meta-properties","aoid":null,"title":"Meta Properties","titleHTML":"Meta Properties","number":"1.2","namespace":"https://domenic.github.io/proposal-import-meta/","location":"","referencingIds":[],"key":"Meta Properties"},{"type":"clause","id":"sec-left-hand-side-expressions","aoid":null,"title":"Left-Hand-Side Expressions","titleHTML":"Left-Hand-Side Expressions","number":"1","namespace":"https://domenic.github.io/proposal-import-meta/","location":"","referencingIds":[],"key":"Left-Hand-Side Expressions"}]</script></head><body><div id="menu-toggle">☰</div><div id="menu-spacer"></div><div id="menu"><div id="menu-search"><input type="text" id="menu-search-box" placeholder="Search..."><div id="menu-search-results" class="inactive"></div></div><div id="menu-pins"><div class="menu-pane-header">Pins</div><ul id="menu-pins-list"></ul></div><div class="menu-pane-header">Table of Contents</div><div id="menu-toc"><ol class="toc"><li><span class="item-toggle-none"></span><a href="#introduction" title="Introduction">Introduction</a></li><li><span class="item-toggle">◢</span><a href="#sec-left-hand-side-expressions" title="Left-Hand-Side Expressions"><span class="secnum">1</span> Left-Hand-Side Expressions</a><ol class="toc"><li><span class="item-toggle">◢</span><a href="#sec-static-semantics" title="Static Semantics"><span class="secnum">1.1</span> Static Semantics</a><ol class="toc"><li><span class="item-toggle-none"></span><a href="#sec-left-hand-side-expressions-static-semantics-early-errors" title="Static Semantics: Early Errors"><span class="secnum">1.1.1</span> <ins>SS: Early Errors</ins></a></li></ol></li><li><span class="item-toggle">◢</span><a href="#sec-meta-properties" title="Meta Properties"><span class="secnum">1.2</span> Meta Properties</a><ol class="toc"><li><span class="item-toggle-none"></span><a href="#sec-meta-properties-runtime-semantics-evaluation" title="Runtime Semantics: Evaluation"><span class="secnum">1.2.1</span> RS: Evaluation</a></li></ol></li></ol></li></ol></div></div><div id="spec-container"><h1 class="version first">Stage 0 Draft / May 24, 2017</h1><h1 class="title">import.meta</h1>
 <script src="ecmarkup.js" defer=""></script>
 <link rel="stylesheet" href="ecmarkup.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/solarized_light.min.css">
@@ -9,4 +9,98 @@
 
   <p>Background explanatory material for this specification can be found in the  <a href="https://github.com/domenic/proposal-import-meta">domenic/proposal-import-meta</a> repository. See also the  <a href="https://github.com/domenic/proposal-import-meta/issues">issues</a> list.</p>
 </emu-intro>
+
+<emu-clause id="sec-left-hand-side-expressions">
+  <h1><span class="secnum">1</span>Left-Hand-Side Expressions</h1>
+  <h2>Syntax</h2>
+  <emu-grammar><emu-production name="MemberExpression" params="Yield, Await" id="prod-MemberExpression">
+    <emu-nt params="Yield, Await"><a href="#prod-MemberExpression">MemberExpression</a><emu-mods><emu-params>[Yield, Await]</emu-params></emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="669d9e8f"><emu-nt params="?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-PrimaryExpression">PrimaryExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="46700b57"><emu-nt params="?Yield, ?Await" id="_ref_1"><a href="#prod-MemberExpression">MemberExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>[</emu-t><emu-nt params="+In, ?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-Expression">Expression</a><emu-mods><emu-params>[+In, ?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>]</emu-t></emu-rhs>
+    <emu-rhs a="fea749a8"><emu-nt params="?Yield, ?Await" id="_ref_2"><a href="#prod-MemberExpression">MemberExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>.</emu-t><emu-nt><a href="https://tc39.github.io/ecma262/#prod-IdentifierName">IdentifierName</a></emu-nt></emu-rhs>
+    <emu-rhs a="27fb207d"><emu-nt params="?Yield, ?Await" id="_ref_3"><a href="#prod-MemberExpression">MemberExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-nt params="?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-TemplateLiteral">TemplateLiteral</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="83d44750"><emu-nt params="?Yield, ?Await" id="_ref_4"><a href="#prod-SuperProperty">SuperProperty</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="c81ee20f"><emu-nt id="_ref_5"><a href="#prod-MetaProperty">MetaProperty</a></emu-nt></emu-rhs>
+    <emu-rhs a="b8554289"><emu-t>new</emu-t><emu-nt params="?Yield, ?Await" id="_ref_6"><a href="#prod-MemberExpression">MemberExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-nt params="?Yield, ?Await" id="_ref_7"><a href="#prod-Arguments">Arguments</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="SuperProperty" params="Yield, Await" id="prod-SuperProperty">
+    <emu-nt params="Yield, Await"><a href="#prod-SuperProperty">SuperProperty</a><emu-mods><emu-params>[Yield, Await]</emu-params></emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="7f66819f"><emu-t>super</emu-t><emu-t>[</emu-t><emu-nt params="+In, ?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-Expression">Expression</a><emu-mods><emu-params>[+In, ?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>]</emu-t></emu-rhs>
+    <emu-rhs a="f690ec4a"><emu-t>super</emu-t><emu-t>.</emu-t><emu-nt><a href="https://tc39.github.io/ecma262/#prod-IdentifierName">IdentifierName</a></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="MetaProperty" id="prod-MetaProperty">
+    <emu-nt><a href="#prod-MetaProperty">MetaProperty</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="733bdb20"><emu-nt id="_ref_8"><a href="#prod-NewTarget">NewTarget</a></emu-nt></emu-rhs><ins>
+    <emu-rhs a="fdc3648f"><emu-nt id="_ref_9"><a href="#prod-ImportMeta">ImportMeta</a></emu-nt></emu-rhs>
+</ins></emu-production>
+<emu-production name="NewTarget" id="prod-NewTarget">
+    <emu-nt><a href="#prod-NewTarget">NewTarget</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="d2de213d"><emu-t>new</emu-t><emu-t>.</emu-t><emu-t>target</emu-t></emu-rhs>
+</emu-production><ins>
+<emu-production name="ImportMeta" id="prod-ImportMeta">
+    <emu-nt><a href="#prod-ImportMeta">ImportMeta</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="f0c60de9"><emu-t>import</emu-t><emu-t>.</emu-t><emu-t>meta</emu-t></emu-rhs></emu-production></ins>
+
+<emu-production name="NewExpression" params="Yield, Await" id="prod-NewExpression">
+    <emu-nt params="Yield, Await"><a href="#prod-NewExpression">NewExpression</a><emu-mods><emu-params>[Yield, Await]</emu-params></emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="55b72ef4"><emu-nt params="?Yield, ?Await" id="_ref_10"><a href="#prod-MemberExpression">MemberExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="8b27ffb1"><emu-t>new</emu-t><emu-nt params="?Yield, ?Await" id="_ref_11"><a href="#prod-NewExpression">NewExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="CallExpression" params="Yield, Await" id="prod-CallExpression">
+    <emu-nt params="Yield, Await"><a href="#prod-CallExpression">CallExpression</a><emu-mods><emu-params>[Yield, Await]</emu-params></emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="callcover"><emu-nt params="?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-CoverCallExpressionAndAsyncArrowHead">CoverCallExpressionAndAsyncArrowHead</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="e5c60d05"><emu-nt params="?Yield, ?Await" id="_ref_12"><a href="#prod-SuperCall">SuperCall</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="cd0d9a85"><emu-nt params="?Yield, ?Await" id="_ref_13"><a href="#prod-CallExpression">CallExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-nt params="?Yield, ?Await" id="_ref_14"><a href="#prod-Arguments">Arguments</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="24037841"><emu-nt params="?Yield, ?Await" id="_ref_15"><a href="#prod-CallExpression">CallExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>[</emu-t><emu-nt params="+In, ?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-Expression">Expression</a><emu-mods><emu-params>[+In, ?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>]</emu-t></emu-rhs>
+    <emu-rhs a="f1fcc490"><emu-nt params="?Yield, ?Await" id="_ref_16"><a href="#prod-CallExpression">CallExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>.</emu-t><emu-nt><a href="https://tc39.github.io/ecma262/#prod-IdentifierName">IdentifierName</a></emu-nt></emu-rhs>
+    <emu-rhs a="e25f4b8f"><emu-nt params="?Yield, ?Await" id="_ref_17"><a href="#prod-CallExpression">CallExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-nt params="?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-TemplateLiteral">TemplateLiteral</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="SuperCall" params="Yield, Await" id="prod-SuperCall">
+    <emu-nt params="Yield, Await"><a href="#prod-SuperCall">SuperCall</a><emu-mods><emu-params>[Yield, Await]</emu-params></emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="6b5bb3dd"><emu-t>super</emu-t><emu-nt params="?Yield, ?Await" id="_ref_18"><a href="#prod-Arguments">Arguments</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="Arguments" params="Yield, Await" id="prod-Arguments">
+    <emu-nt params="Yield, Await"><a href="#prod-Arguments">Arguments</a><emu-mods><emu-params>[Yield, Await]</emu-params></emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="78e44c33"><emu-t>(</emu-t><emu-t>)</emu-t></emu-rhs>
+    <emu-rhs a="668c9409"><emu-t>(</emu-t><emu-nt params="?Yield, ?Await" id="_ref_19"><a href="#prod-ArgumentList">ArgumentList</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>)</emu-t></emu-rhs>
+    <emu-rhs a="c520166a"><emu-t>(</emu-t><emu-nt params="?Yield, ?Await" id="_ref_20"><a href="#prod-ArgumentList">ArgumentList</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>,</emu-t><emu-t>)</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="ArgumentList" params="Yield, Await" id="prod-ArgumentList">
+    <emu-nt params="Yield, Await"><a href="#prod-ArgumentList">ArgumentList</a><emu-mods><emu-params>[Yield, Await]</emu-params></emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="8f532861"><emu-nt params="+In, ?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-AssignmentExpression">AssignmentExpression</a><emu-mods><emu-params>[+In, ?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="b623b4c8"><emu-t>...</emu-t><emu-nt params="+In, ?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-AssignmentExpression">AssignmentExpression</a><emu-mods><emu-params>[+In, ?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="2ab72a4a"><emu-nt params="?Yield, ?Await" id="_ref_21"><a href="#prod-ArgumentList">ArgumentList</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>,</emu-t><emu-nt params="+In, ?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-AssignmentExpression">AssignmentExpression</a><emu-mods><emu-params>[+In, ?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="d6f13c65"><emu-nt params="?Yield, ?Await" id="_ref_22"><a href="#prod-ArgumentList">ArgumentList</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>,</emu-t><emu-t>...</emu-t><emu-nt params="+In, ?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-AssignmentExpression">AssignmentExpression</a><emu-mods><emu-params>[+In, ?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="LeftHandSideExpression" params="Yield, Await" id="prod-LeftHandSideExpression">
+    <emu-nt params="Yield, Await"><a href="#prod-LeftHandSideExpression">LeftHandSideExpression</a><emu-mods><emu-params>[Yield, Await]</emu-params></emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="a89347cc"><emu-nt params="?Yield, ?Await" id="_ref_23"><a href="#prod-NewExpression">NewExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="8699f68d"><emu-nt params="?Yield, ?Await" id="_ref_24"><a href="#prod-CallExpression">CallExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
+</emu-production></emu-grammar>
+
+  <emu-clause id="sec-static-semantics">
+    <h1><span class="secnum">1.1</span>Static Semantics</h1>
+
+    <emu-clause id="sec-left-hand-side-expressions-static-semantics-early-errors">
+      <h1><span class="secnum">1.1.1</span><ins>Static Semantics: Early Errors</ins></h1>
+
+      <emu-grammar><emu-production name="ImportMeta">
+    <emu-nt><a href="#prod-ImportMeta">ImportMeta</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="f0c60de9"><emu-t>import</emu-t><emu-t>.</emu-t><emu-t>meta</emu-t></emu-rhs>
+</emu-production></emu-grammar>
+
+      <ul>
+        <li>It is an early Syntax Error if <emu-nt><a href="https://tc39.github.io/ecma262/#prod-Module">Module</a></emu-nt> is not the syntactic <emu-xref href="#sec-context-free-grammars"><a href="https://tc39.github.io/ecma262/#sec-context-free-grammars">goal symbol</a></emu-xref>.</li>
+      </ul>
+    </emu-clause>
+  </emu-clause>
+
+  <emu-clause id="sec-meta-properties">
+    <h1><span class="secnum">1.2</span>Meta Properties</h1>
+
+    <emu-clause id="sec-meta-properties-runtime-semantics-evaluation">
+      <h1><span class="secnum">1.2.1</span>Runtime Semantics: Evaluation</h1>
+      <emu-grammar><emu-production name="NewTarget" collapsed="">
+    <emu-nt><a href="#prod-NewTarget">NewTarget</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="d2de213d"><emu-t>new</emu-t><emu-t>.</emu-t><emu-t>target</emu-t></emu-rhs>
+</emu-production></emu-grammar>
+      <emu-alg><ol><li>Return <emu-xref aoid="GetNewTarget" id="_ref_0"><a href="https://tc39.github.io/ecma262/#sec-getnewtarget">GetNewTarget</a></emu-xref>().
+      </li></ol></emu-alg>
+    </emu-clause>
+
+    <emu-grammar><ins><emu-production name="ImportMeta" collapsed="">
+    <emu-nt><a href="#prod-ImportMeta">ImportMeta</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="f0c60de9"><emu-t>import</emu-t><emu-t>.</emu-t><emu-t>meta</emu-t></emu-rhs>
+</emu-production></ins></emu-grammar>
+    <emu-alg><ol><li><ins>Return ... TODO ...</ins>
+    </li></ol></emu-alg>
+  </emu-clause>
+  </emu-clause>
+
 </div></body>
