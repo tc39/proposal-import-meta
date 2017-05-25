@@ -1,10 +1,10 @@
 # import.meta
 
-This repository contains a proposal for adding an `import.meta` metaproperty to JavaScript, for holding host-specific metadata about the current module. It is currently in stage 0 of [the TC39 process](https://tc39.github.io/process-document/).
+This repository contains a proposal for adding an `import.meta` metaproperty to JavaScript, for holding host-specific metadata about the current module. It is currently in stage 2 of [the TC39 process](https://tc39.github.io/process-document/).
 
 Previously this problem space was discussed with the module-loading community in [whatwg/html#1013](https://github.com/whatwg/html/issues/1013). The result was a presentation at the May 2017 TC39 meeting of [these slides](https://docs.google.com/presentation/d/1p1BGFY05-iCiop8yV0hNyWU41_wlwwfv6HIDkRNNIBQ/edit?usp=sharing). The committee's feedback about the options presented there led to the particular form chosen in this proposal; these discussions are summarized in the rest of this README.
 
-You can view the in-progress [spec draft](https://domenic.github.io/proposal-import-meta/) and take part in the discussions on the [issue tracker](https://github.com/domenic/proposal-import-meta/issues).
+You can view the in-progress [spec draft](https://tc39.github.io/proposal-import-meta/) and take part in the discussions on the [issue tracker](https://github.com/tc39/proposal-import-meta/issues).
 
 ## Motivation and use cases
 
