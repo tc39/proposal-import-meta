@@ -125,3 +125,15 @@ console.log(moduleScriptElement);
 From an implementation and spec perspective, this could be done with no ECMAScript spec changes by, for example, the host prepending appropriate variable declarations to every module source text before handing it off to the ECMAScript spec mechanisms. Alternately, the host could introduce a new type of module record that has a slightly different scope for its [[Environment]] field. (Or ECMASCript could be modified to allow hosts to intervene in setting up the [[Environment]] of a source text module record.)
 
 The committee was generally against handling this idea in ECMAScript as several members were not a fan of "polluting" module scopes with new variables. It remains a fallback option for web hosts if `import.meta` fails to advance quickly enough.
+
+## FAQs
+
+### Will this object be locked down in any way?
+
+The committee's tentative decision was no: by default the `import.meta` object will be extensible, and its properties will be writable, configurable, and enumerable.
+
+There is no real benefit to locking down the object, as it is local to the module, and can only be shared explicitly by passing it around. It does not represent "global state" or anything of the sort.
+
+Additionally, leaving it mutable allows module-to-module transpilers to "polyfill" future features by inserting a few extra lines at the top of each module, adding or modifying `import.meta` properties. For example, if in a few years HTML adds an additional property, it would be possible to write a transpiler that adds that property, when targeting older browsers.
+
+Finally, the escape hatch provided by HostFinalizeImportMeta allows hosts which prefer a more locked-down `import.meta` object to take that route.
