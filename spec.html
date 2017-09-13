@@ -21,215 +21,251 @@ contributors: Domenic Denicola
   integration spec</a> that builds on top of the below JavaScript specification.</p>
 </emu-intro>
 
-<emu-clause id="sec-modules">
-  <h1>Modules</h1>
+<emu-clause id="sec-ecmascript-language-scripts-and-modules">
+  <h1>ECMAScript Language: Scripts and Modules</h1>
 
-  <emu-clause id="sec-module-semantics">
-    <h1>Module Semantics</h1>
+  <!-- es6num="15.1" -->
+  <emu-clause id="sec-scripts">
+    <h1>Scripts</h1>
 
-    <emu-clause id="sec-abstract-module-records">
-      <h1>Abstract Module Records</h1>
+    <emu-clause id="sec-parse-script" aoid="ParseScript">
+      <h1>ParseScript ( _sourceText_, _realm_, _hostDefined_ )</h1>
 
-      <emu-table id="table-36" caption="Module Record Fields">
-        <table>
-          <thead>
-          <tr>
-            <th>
-              Field Name
-            </th>
-            <th>
-              Value Type
-            </th>
-            <th>
-              Meaning
-            </th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td>
-              [[Realm]]
-            </td>
-            <td>
-              Realm Record | *undefined*
-            </td>
-            <td>
-              The Realm within which this module was created. *undefined* if not yet assigned.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              [[Environment]]
-            </td>
-            <td>
-              Lexical Environment | *undefined*
-            </td>
-            <td>
-              The Lexical Environment containing the top level bindings for this module. This field is set when the module is instantiated.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              [[Namespace]]
-            </td>
-            <td>
-              Object | *undefined*
-            </td>
-            <td>
-              The Module Namespace Object (<emu-xref href="#sec-module-namespace-objects"></emu-xref>) if one has been created for this module. Otherwise *undefined*.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              [[Status]]
-            </td>
-            <td>
-              String
-            </td>
-            <td>
-              Initially `"uninstantiated"`. Can become `"instantiating"`, `"instantiated"`, `"evaluating"`, `"evaluated"`, or `"errored"` as the module progresses throughout its lifecycle.
-            </td>
-          </tr>
-          <tr>
-            <td>
-              [[ErrorCompletion]]
-            </td>
-            <td>
-              An abrupt completion | *undefined*
-            </td>
-            <td>
-              A completion of type ~throw~ representing the exception that occurred during instantiation or evaluation, if [[Status]] is `"errored"`. Otherwise *undefined*.
-            </td>
-          </tr>
-          <tr>
-            <td><ins>[[Meta]]</ins></td>
-            <td><ins>Object | *undefined*</ins></td>
-            <td>
-              <ins>An object exposed through the `import.meta` meta property. Concrete subclasses of
-              the Abstract Module Record specification type are expected to fill this field when
-              creating the Module Record, usually by delegating to the host environment. It is
-              *undefined* by default, but must become an Object before it is ever accessed by
-              ECMAScript code.</ins>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              [[HostDefined]]
-            </td>
-            <td>
-              Any, default value is *undefined*.
-            </td>
-            <td>
-              Field reserved for use by host environments that need to associate additional information with a module.
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </emu-table>
+      <p>The abstract operation ParseScript with arguments _sourceText_, _realm_, and _hostDefined_ creates a Script Record based upon the result of parsing _sourceText_ as a |Script|. ParseScript performs the following steps:</p>
+
+      <emu-alg>
+        1. Assert: _sourceText_ is an ECMAScript source text (see clause <emu-xref href="#sec-ecmascript-language-source-code"></emu-xref>).
+        1. Parse _sourceText_ using |Script| as the goal symbol and analyse the parse result for any Early Error conditions<ins>, applying the additional early error conditions from <emu-xref href="#sec-import-meta-additional-errors"></emu-xref></ins>. If the parse was successful and no early errors were found, let _body_ be the resulting parse tree. Otherwise, let _body_ be a List of one or more *SyntaxError* or *ReferenceError* objects representing the parsing errors and/or early errors. Parsing and early error detection may be interweaved in an implementation-dependent manner. If more than one parsing error or early error is present, the number and ordering of error objects in the list is implementation-dependent, but at least one must be present.
+        1. If _body_ is a List of errors, return _body_.
+        1. Return Script Record {[[Realm]]: _realm_, [[Environment]]: *undefined*, [[ECMAScriptCode]]: _body_, [[HostDefined]]: _hostDefined_}.
+      </emu-alg>
+      <emu-note>
+        <p>An implementation may parse script source text and analyse it for Early Error conditions prior to evaluation of ParseScript for that script source text. However, the reporting of any errors must be deferred until the point where this specification actually performs ParseScript upon that source text.</p>
+      </emu-note>
     </emu-clause>
+  </emu-clause>
 
-    <emu-clause id="sec-source-text-module-records">
-      <h1>Source Text Module Records</h1>
+  <emu-clause id="sec-modules">
+    <h1>Modules</h1>
 
-      <emu-clause id="sec-moduledeclarationinstantiation">
-        <h1>Instantiate( ) Concrete Method</h1>
+    <emu-clause id="sec-module-semantics">
+      <h1>Module Semantics</h1>
 
-        <emu-clause id="sec-innermoduledeclarationinstantiation" aoid="InnerModuleDeclarationInstantiation">
-          <h1>InnerModuleDeclarationInstantiation( _module_, _stack_, _index_ )</h1>
+      <emu-clause id="sec-abstract-module-records">
+        <h1>Abstract Module Records</h1>
 
-          <p>The InnerModuleDeclarationInstantiation abstract operation is used by Instantiate to perform the actual instantiation process for the Source Text Module Record _module_, as well as recursively on all other Source Text Module Records in the dependency graph. The _stack_ and _index_ parameters, as well as a module's [[DFSIndex]] and [[DFSAncestorIndex]] fields, keep track of the depth-first search (DFS) traversal. In particular, [[DFSAncestorIndex]] is used to discover strongly connected components (SCCs), such that all modules in an SCC transition to `"instantiated"` together.</p>
+        <emu-table id="table-36" caption="Module Record Fields">
+          <table>
+            <thead>
+            <tr>
+              <th>
+                Field Name
+              </th>
+              <th>
+                Value Type
+              </th>
+              <th>
+                Meaning
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>
+                [[Realm]]
+              </td>
+              <td>
+                Realm Record | *undefined*
+              </td>
+              <td>
+                The Realm within which this module was created. *undefined* if not yet assigned.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                [[Environment]]
+              </td>
+              <td>
+                Lexical Environment | *undefined*
+              </td>
+              <td>
+                The Lexical Environment containing the top level bindings for this module. This field is set when the module is instantiated.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                [[Namespace]]
+              </td>
+              <td>
+                Object | *undefined*
+              </td>
+              <td>
+                The Module Namespace Object (<emu-xref href="#sec-module-namespace-objects"></emu-xref>) if one has been created for this module. Otherwise *undefined*.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                [[Status]]
+              </td>
+              <td>
+                String
+              </td>
+              <td>
+                Initially `"uninstantiated"`. Can become `"instantiating"`, `"instantiated"`, `"evaluating"`, `"evaluated"`, or `"errored"` as the module progresses throughout its lifecycle.
+              </td>
+            </tr>
+            <tr>
+              <td>
+                [[ErrorCompletion]]
+              </td>
+              <td>
+                An abrupt completion | *undefined*
+              </td>
+              <td>
+                A completion of type ~throw~ representing the exception that occurred during instantiation or evaluation, if [[Status]] is `"errored"`. Otherwise *undefined*.
+              </td>
+            </tr>
+            <tr>
+              <td><ins>[[Meta]]</ins></td>
+              <td><ins>Object | *undefined*</ins></td>
+              <td>
+                <ins>An object exposed through the `import.meta` meta property. Concrete subclasses of
+                the Abstract Module Record specification type are expected to fill this field when
+                creating the Module Record, usually by delegating to the host environment. It is
+                *undefined* by default, but must become an Object before it is ever accessed by
+                ECMAScript code.</ins>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                [[HostDefined]]
+              </td>
+              <td>
+                Any, default value is *undefined*.
+              </td>
+              <td>
+                Field reserved for use by host environments that need to associate additional information with a module.
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </emu-table>
+      </emu-clause>
 
-          <p>This abstract operation performs the following steps:</p>
+      <emu-clause id="sec-source-text-module-records">
+        <h1>Source Text Module Records</h1>
 
-          <emu-alg>
-            1. If _module_ is not a Source Text Module Record, then
-              1. Assert: _module_.[[Status]] is not `"instantiating"`.
-              1. Perform ? _module_.Instantiate().
+        <emu-clause id="sec-moduledeclarationinstantiation">
+          <h1>Instantiate( ) Concrete Method</h1>
+
+          <emu-clause id="sec-innermoduledeclarationinstantiation" aoid="InnerModuleDeclarationInstantiation">
+            <h1>InnerModuleDeclarationInstantiation( _module_, _stack_, _index_ )</h1>
+
+            <p>The InnerModuleDeclarationInstantiation abstract operation is used by Instantiate to perform the actual instantiation process for the Source Text Module Record _module_, as well as recursively on all other Source Text Module Records in the dependency graph. The _stack_ and _index_ parameters, as well as a module's [[DFSIndex]] and [[DFSAncestorIndex]] fields, keep track of the depth-first search (DFS) traversal. In particular, [[DFSAncestorIndex]] is used to discover strongly connected components (SCCs), such that all modules in an SCC transition to `"instantiated"` together.</p>
+
+            <p>This abstract operation performs the following steps:</p>
+
+            <emu-alg>
+              1. If _module_ is not a Source Text Module Record, then
+                1. Assert: _module_.[[Status]] is not `"instantiating"`.
+                1. Perform ? _module_.Instantiate().
+                1. Return _index_.
+              1. If _module_.[[Status]] is `"instantiating"`, `"instantiated"`, or `"evaluated"`, then
+                1. Return _index_.
+              1. If _module_.[[Status]] is `"errored"`, then
+                1. Return _module_.[[ErrorCompletion]].
+              1. Assert: _module_.[[Status]] is `"uninstantiated"`.
+              1. Set _module_.[[Status]] to `"instantiating"`.
+              1. Set _module_.[[DFSIndex]] to _index_.
+              1. Set _module_.[[DFSAncestorIndex]] to _index_.
+              1. Set _index_ to _index_ + 1.
+              1. Append _module_ to _stack_.
+              1. For each String _required_ that is an element of _module_.[[RequestedModules]], do
+                1. Let _requiredModule_ be ? HostResolveImportedModule(_module_, _required_).
+                1. Set _index_ to ? InnerModuleDeclarationInstantiation(_requiredModule_, _stack_, _index_).
+                1. Assert: _requiredModule_.[[Status]] is either `"instantiating"`, `"instantiated"`, or `"evaluated"`.
+                1. Assert: _requiredModule_.[[Status]] is `"instantiating"` if and only if _requiredModule_ is in _stack_.
+                1. If _requiredModule_.[[Status]] is `"instantiating"`, then
+                  1. Assert: _requiredModule_ is a Source Text Module Record.
+                  1. Set _module_.[[DFSAncestorIndex]] to min(_module_.[[DFSAncestorIndex]], _requiredModule_.[[DFSAncestorIndex]]).
+              1. Perform ? ModuleDeclarationEnvironmentSetup(_module_).
+              1. <ins>Let _importMeta_ be ObjectCreate(*null*).</ins>
+              1. <ins>Let _importMetaValues_ be ! HostGetImportMetaProperties(_module_).</ins>
+              1. <ins>For each Record {[[Key]], [[Value]]} _p_ that is an element of _importMetaValues_,</ins>
+                1. <ins>Perform ! CreateDataProperty(_importMeta_, _p_.[[Key]], _p_.[[Value]]).</ins>
+              1. <ins>Perform ! HostFinalizeImportMeta(_importMeta_, _module_).</ins>
+              1. <ins>Set _module_.[[ImportMeta]] to _importMeta_.</ins>
+              1. Assert: _module_ occurs exactly once in _stack_.
+              1. Assert: _module_.[[DFSAncestorIndex]] is less than or equal to _module_.[[DFSIndex]].
+              1. If _module_.[[DFSAncestorIndex]] equals _module_.[[DFSIndex]], then
+                1. Let _done_ be *false*.
+                1. Repeat, while _done_ is *false*,
+                  1. Let _requiredModule_ be the last element in _stack_.
+                  1. Remove the last element of _stack_.
+                  1. Set _requiredModule_.[[Status]] to `"instantiated"`.
+                  1. If _requiredModule_ and _module_ are the same Module Record, set _done_ to *true*.
               1. Return _index_.
-            1. If _module_.[[Status]] is `"instantiating"`, `"instantiated"`, or `"evaluated"`, then
-              1. Return _index_.
-            1. If _module_.[[Status]] is `"errored"`, then
-              1. Return _module_.[[ErrorCompletion]].
-            1. Assert: _module_.[[Status]] is `"uninstantiated"`.
-            1. Set _module_.[[Status]] to `"instantiating"`.
-            1. Set _module_.[[DFSIndex]] to _index_.
-            1. Set _module_.[[DFSAncestorIndex]] to _index_.
-            1. Set _index_ to _index_ + 1.
-            1. Append _module_ to _stack_.
-            1. For each String _required_ that is an element of _module_.[[RequestedModules]], do
-              1. Let _requiredModule_ be ? HostResolveImportedModule(_module_, _required_).
-              1. Set _index_ to ? InnerModuleDeclarationInstantiation(_requiredModule_, _stack_, _index_).
-              1. Assert: _requiredModule_.[[Status]] is either `"instantiating"`, `"instantiated"`, or `"evaluated"`.
-              1. Assert: _requiredModule_.[[Status]] is `"instantiating"` if and only if _requiredModule_ is in _stack_.
-              1. If _requiredModule_.[[Status]] is `"instantiating"`, then
-                1. Assert: _requiredModule_ is a Source Text Module Record.
-                1. Set _module_.[[DFSAncestorIndex]] to min(_module_.[[DFSAncestorIndex]], _requiredModule_.[[DFSAncestorIndex]]).
-            1. Perform ? ModuleDeclarationEnvironmentSetup(_module_).
-            1. <ins>Let _importMeta_ be ObjectCreate(*null*).</ins>
-            1. <ins>Let _importMetaValues_ be ! HostGetImportMetaProperties(_module_).</ins>
-            1. <ins>For each Record {[[Key]], [[Value]]} _p_ that is an element of _importMetaValues_,</ins>
-              1. <ins>Perform ! CreateDataProperty(_importMeta_, _p_.[[Key]], _p_.[[Value]]).</ins>
-            1. <ins>Perform ! HostFinalizeImportMeta(_importMeta_, _module_).</ins>
-            1. <ins>Set _module_.[[ImportMeta]] to _importMeta_.</ins>
-            1. Assert: _module_ occurs exactly once in _stack_.
-            1. Assert: _module_.[[DFSAncestorIndex]] is less than or equal to _module_.[[DFSIndex]].
-            1. If _module_.[[DFSAncestorIndex]] equals _module_.[[DFSIndex]], then
-              1. Let _done_ be *false*.
-              1. Repeat, while _done_ is *false*,
-                1. Let _requiredModule_ be the last element in _stack_.
-                1. Remove the last element of _stack_.
-                1. Set _requiredModule_.[[Status]] to `"instantiated"`.
-                1. If _requiredModule_ and _module_ are the same Module Record, set _done_ to *true*.
-            1. Return _index_.
-          </emu-alg>
+            </emu-alg>
+          </emu-clause>
         </emu-clause>
-      </emu-clause>
 
-      <emu-clause id="sec-hostgetimportmetaproperties" aoid="HostGetImportMetaProperties">
-        <h1><ins>Runtime Semantics: HostGetImportMetaProperties ( _moduleRecord_ )</ins></h1>
+        <emu-clause id="sec-hostgetimportmetaproperties" aoid="HostGetImportMetaProperties">
+          <h1><ins>Runtime Semantics: HostGetImportMetaProperties ( _moduleRecord_ )</ins></h1>
 
-        <p>HostGetImportMetaProperties is an implementation-defined abstract operation that allows
-        hosts to provide property keys and values for the object returned from `import.meta`.</p>
+          <p>HostGetImportMetaProperties is an implementation-defined abstract operation that allows
+          hosts to provide property keys and values for the object returned from `import.meta`.</p>
 
-        <p>The implementation of HostGetImportMetaProperties must conform to the following
-        requirements:</p>
+          <p>The implementation of HostGetImportMetaProperties must conform to the following
+          requirements:</p>
 
-        <ul>
-          <li>It must return a List, whose values are all Records with the two fields [[Key]] and
-          [[Value]].</li>
+          <ul>
+            <li>It must return a List, whose values are all Records with the two fields [[Key]] and
+            [[Value]].</li>
 
-          <li>Each such Record's [[Key]] field must be a property key, i.e., IsPropertyKey must
-          return true when applied to it.</li>
+            <li>Each such Record's [[Key]] field must be a property key, i.e., IsPropertyKey must
+            return true when applied to it.</li>
 
-          <li>Each such Record's [[Value]] field must be an ECMAScript value.</li>
+            <li>Each such Record's [[Value]] field must be an ECMAScript value.</li>
 
-          <li>It must always complete normally (i.e., not return an abrupt completion).</li>
-        </ul>
+            <li>It must always complete normally (i.e., not return an abrupt completion).</li>
+          </ul>
 
-        <p>The default implementation of HostGetImportMetaProperties is to return a new empty
-        List.</p>
-      </emu-clause>
+          <p>The default implementation of HostGetImportMetaProperties is to return a new empty
+          List.</p>
+        </emu-clause>
 
-      <emu-clause id="sec-hostfinalizeimportmeta" aoid="HostFinalizeImportMeta">
-        <h1><ins>Runtime Semantics: HostFinalizeImportMeta ( _importMeta_, _moduleRecord_ )</ins></h1>
+        <emu-clause id="sec-hostfinalizeimportmeta" aoid="HostFinalizeImportMeta">
+          <h1><ins>Runtime Semantics: HostFinalizeImportMeta ( _importMeta_, _moduleRecord_ )</ins></h1>
 
-        <p>HostFinalizeImportMeta is an implementation-defined abstract operation that allows
-        hosts to perform any extraordinary operations to prepare the object returned from
-        `import.meta`.</p>
+          <p>HostFinalizeImportMeta is an implementation-defined abstract operation that allows
+          hosts to perform any extraordinary operations to prepare the object returned from
+          `import.meta`.</p>
 
-        <p>Most hosts will be able to simply define HostGetImportMetaProperties, and leave
-        HostFinalizeImportMeta with its default behavior. However, HostFinalizeImportMeta provies an
-        "escape hatch" for hosts which need to directly manipulate the object before it is exposed
-        to ECMAScript code.</p>
+          <p>Most hosts will be able to simply define HostGetImportMetaProperties, and leave
+          HostFinalizeImportMeta with its default behavior. However, HostFinalizeImportMeta provies an
+          "escape hatch" for hosts which need to directly manipulate the object before it is exposed
+          to ECMAScript code.</p>
 
-        <p>The implementation of HostFinalizeImportMeta must conform to the following
-        requirements:</p>
+          <p>The implementation of HostFinalizeImportMeta must conform to the following
+          requirements:</p>
 
-        <ul>
-          <li>It must always complete normally (i.e., not return an abrupt completion).</li>
-        </ul>
+          <ul>
+            <li>It must always complete normally (i.e., not return an abrupt completion).</li>
+          </ul>
 
-        <p>The default implementation of HostFinalizeImportMeta is to do nothing.</p>
+          <p>The default implementation of HostFinalizeImportMeta is to do nothing.</p>
+        </emu-clause>
+
+        <emu-clause id="sec-import-meta-additional-errors">
+          <h1>Additional Early Error Rules for `import.meta` in Script Parsing</h1>
+
+          <p>These static semantics are applied by ParseScript and PerformEval when it is inappropriate for `import.meta` to be evaluated.</p>
+
+          <emu-grammar>ScriptBody : StatementList</emu-grammar>
+          <ul>
+            <li>It is a Syntax Error if |StatementList| Contains |ImportMeta|.</li>
+          </ul>
+        </emu-clause>
       </emu-clause>
     </emu-clause>
   </emu-clause>
@@ -374,4 +410,57 @@ contributors: Domenic Denicola
     </emu-alg>
   </emu-clause>
   </emu-clause>
+</emu-clause>
+
+<emu-clause id="sec-performeval" aoid="PerformEval">
+  <h1>Runtime Semantics: PerformEval ( _x_, _evalRealm_, _strictCaller_, _direct_ )</h1>
+  <p>The abstract operation PerformEval with arguments _x_, _evalRealm_, _strictCaller_, and _direct_ performs the following steps:</p>
+  <emu-alg>
+    1. Assert: If _direct_ is *false*, then _strictCaller_ is also *false*.
+    1. If Type(_x_) is not String, return _x_.
+    1. Let _thisEnvRec_ be ! GetThisEnvironment().
+    1. If _thisEnvRec_ is a function Environment Record, then
+      1. Let _F_ be _thisEnvRec_.[[FunctionObject]].
+      1. Let _inFunction_ be *true*.
+      1. Let _inMethod_ be _thisEnvRec_.HasSuperBinding().
+      1. If _F_.[[ConstructorKind]] is `"derived"`, let _inDerivedConstructor_ be *true*; otherwise, let _inDerivedConstructor_ be *false*.
+    1. Else,
+      1. Let _inFunction_ be *false*.
+      1. Let _inMethod_ be *false*.
+      1. Let _inDerivedConstructor_ be *false*.
+    1. <ins>Let _inModule_ be *true* if ! GetActiveScriptOrModule() is a Module Record, and *false* otherwise.</ins>
+    1. Let _script_ be the ECMAScript code that is the result of parsing _x_, interpreted as UTF-16 encoded Unicode text as described in <emu-xref href="#sec-ecmascript-language-types-string-type"></emu-xref>, for the goal symbol |Script|. If _inFunction_ is *false*, additional early error rules from <emu-xref href="#sec-performeval-rules-outside-functions"></emu-xref> are applied. If _inMethod_ is *false*, additional early error rules from <emu-xref href="#sec-performeval-rules-outside-methods"></emu-xref> are applied. If _inDerivedConstructor_ is *false*, additional early error rules from <emu-xref href="#sec-performeval-rules-outside-constructors"></emu-xref> are applied. <ins>If _inModule_ is *false*, additional early error rules from <emu-xref href="#sec-import-meta-additional-errors"></emu-xref> are applied.</ins> If the parse fails, throw a *SyntaxError* exception. If any early errors are detected, throw a *SyntaxError* or a *ReferenceError* exception, depending on the type of the error (but see also clause <emu-xref href="#sec-error-handling-and-language-extensions"></emu-xref>). Parsing and early error detection may be interweaved in an implementation-dependent manner.
+    1. If _script_ Contains |ScriptBody| is *false*, return *undefined*.
+    1. Let _body_ be the |ScriptBody| of _script_.
+    1. If _strictCaller_ is *true*, let _strictEval_ be *true*.
+    1. Else, let _strictEval_ be IsStrict of _script_.
+    1. Let _ctx_ be the running execution context.
+    1. NOTE: If _direct_ is *true*, _ctx_ will be the execution context that performed the direct eval. If _direct_ is *false*, _ctx_ will be the execution context for the invocation of the `eval` function.
+    1. If _direct_ is *true*, then
+      1. Let _lexEnv_ be NewDeclarativeEnvironment(_ctx_'s LexicalEnvironment).
+      1. Let _varEnv_ be _ctx_'s VariableEnvironment.
+    1. Else,
+      1. Let _lexEnv_ be NewDeclarativeEnvironment(_evalRealm_.[[GlobalEnv]]).
+      1. Let _varEnv_ be _evalRealm_.[[GlobalEnv]].
+    1. If _strictEval_ is *true*, set _varEnv_ to _lexEnv_.
+    1. If _ctx_ is not already suspended, suspend _ctx_.
+    1. Let _evalCxt_ be a new ECMAScript code execution context.
+    1. Set the _evalCxt_'s Function to *null*.
+    1. Set the _evalCxt_'s Realm to _evalRealm_.
+    1. Set the _evalCxt_'s ScriptOrModule to _ctx_'s ScriptOrModule.
+    1. Set the _evalCxt_'s VariableEnvironment to _varEnv_.
+    1. Set the _evalCxt_'s LexicalEnvironment to _lexEnv_.
+    1. Push _evalCxt_ on to the execution context stack; _evalCxt_ is now the running execution context.
+    1. Let _result_ be EvalDeclarationInstantiation(_body_, _varEnv_, _lexEnv_, _strictEval_).
+    1. If _result_.[[Type]] is ~normal~, then
+      1. Set _result_ to the result of evaluating _body_.
+    1. If _result_.[[Type]] is ~normal~ and _result_.[[Value]] is ~empty~, then
+      1. Set _result_ to NormalCompletion(*undefined*).
+    1. Suspend _evalCxt_ and remove it from the execution context stack.
+    1. Resume the context that is now on the top of the execution context stack as the running execution context.
+    1. Return Completion(_result_).
+  </emu-alg>
+  <emu-note>
+    <p>The eval code cannot instantiate variable or function bindings in the variable environment of the calling context that invoked the eval if the calling context is evaluating formal parameter initializers or if either the code of the calling context or the eval code is strict mode code. Instead such bindings are instantiated in a new VariableEnvironment that is only accessible to the eval code. Bindings introduced by `let`, `const`, or `class` declarations are always instantiated in a new LexicalEnvironment.</p>
+  </emu-note>
 </emu-clause>
