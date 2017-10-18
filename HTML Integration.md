@@ -1,32 +1,17 @@
 # HTML Integration for `import.meta`
 
-The following outlines the spec changes to the [HTML Standard](http://html.spec.whatwg.org/multipage/) that would be necessary to support the `import.meta` proposal in a web browser host environment.
+We hope to eventually introduce two properties onto `import.meta` in web browsers, via the the [HTML Standard](http://html.spec.whatwg.org/multipage/).
 
-## Scripting processing model definitions
+## `import.meta.url`
 
-_In the [definitions section](https://html.spec.whatwg.org/#module-script), add a new field to module scripts:_
+This property will contain the module script's [base URL](https://html.spec.whatwg.org/#concept-module-script-base-url), [serialized](https://url.spec.whatwg.org/#concept-url-serializer).
 
-**script element**: A `HTMLScriptElement` that initiated the graph, or null if it was not initiated by a `script` element.
+A specification pull request exists at [whatwg/html#3141](https://github.com/whatwg/html/pull/3141) for this. (It's pretty straightforward.)
 
-## Fetching scripts
+## `import.meta.scriptElement`
 
-_In the [fetching scripts](https://html.spec.whatwg.org/#fetching-scripts) section, add an additional optional argument *script element* to the **fetch a module script graph** algorithm._
+This property will contain the `<script>` element that initiated the fetching of the current module, if any. It is meant to be a more robust replacement for `document.currentScript`. See [whatwg/html#1013](https://github.com/whatwg/html/issues/1013) for the genesis of the idea.
 
-_This then needs to be threaded through various algorithms, starting with **[fetch a module script graph](https://html.spec.whatwg.org/#fetch-a-module-script-tree)** and **[fetch the descendants of and instantiate a module script](https://html.spec.whatwg.org/#fetch-the-descendants-of-and-instantiate-a-module-script)**. Eventually it is passed to **[create a module script](https://html.spec.whatwg.org/#creating-a-module-script)** which sets the value in the newly-created module script's **script element** field._
+However, specifying this is harder than you might imagine. For example, a given module script can be contained in multiple graphs with different root `<script>` elements, and which one caused it to instantiate or evaluate could be nondeterministic. There is also a concern that introducing such a long-lived pointer to the `<script>` element could be a memory leak.
 
-_The **[fetch a module worker script graph](https://html.spec.whatwg.org/#fetch-a-module-worker-script-tree)** algorithm should, in contrast, pass through null as the script element to all the algorithms it calls._
-
-## Prepare a script
-
-_In the **[prepare a script](https://html.spec.whatwg.org/#prepare-a-script)** algorithm, pass through the `script` element to the invocations of **fetch a module script graph**, **create a module script**, and **fetch the descendants of and instantiate a module scirpt**._
-
-## HostGetImportMetaProperties(_moduleRecord_)
-
-_To the [Integration with the JavaScript module system](https://html.spec.whatwg.org/#integration-with-the-javascript-module-system) section, add this new subsection._
-
-JavaScript contains an implementation-defined [HostResolveImportedModule](https://domenic.github.io/proposal-import-meta/#sec-hostgetimportmetaproperties) abstract operation. User agents must use the following implementation: [JAVASCRIPT]
-
-1. Let _module script_ be _moduleRecord_.[[HostDefined]].
-1. Let _url_ be _module script_'s [base URL](https://html.spec.whatwg.org/#concept-module-script-base-url), [serialized](https://url.spec.whatwg.org/#concept-url-serializer).
-1. Let _script element_ be _module script_'s **script element**.
-1. Return « Record { [[Key]]: "`url`", [[Value]]: _url_ }, Record { [[Key]]: "`scriptElement`", [[Value]]: _script element_ } ».
+These concerns are being discussed [in the aforementioned thread](https://github.com/whatwg/html/issues/1013#issuecomment-329344476). In the meantime, you can look at the old design we proposed for `import.meta.scriptElement` by checking out [an older draft of this document](https://github.com/tc39/proposal-import-meta/blob/f5d39bc471a5bf2791708f9a3fec943380d9e3ee/HTML%20Integration.md). In light of the above, it was not properly thought through, so this is just for historical reference.
