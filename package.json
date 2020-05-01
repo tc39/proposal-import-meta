@@ -6,10 +6,12 @@
   "license": "MIT",
   "repository": "domenic/proposal-import-meta",
   "scripts": {
+    "prespec": "mkdirp out",
     "spec": "ecmarkup spec.html out/index.html --js out/ecmarkup.js --css out/ecmarkup.css",
     "watch": "ecmarkup --watch spec.html out/index.html --js out/ecmarkup.js --css out/ecmarkup.css"
   },
   "devDependencies": {
-    "ecmarkup": "^3.11.2"
+    "ecmarkup": "^3.11.2",
+    "mkdirp": "^1.0.4"
   }
 }
